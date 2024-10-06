@@ -1,0 +1,12 @@
+.l-h {
+    margin: 0;
+    display: inline-block;
+    position: absolute;
+    top: 2rem;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    left: 14.50rem;
+    color: black;
+}
+#pass {
+    margin-top: 1rem;
+}
