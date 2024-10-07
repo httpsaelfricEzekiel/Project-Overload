@@ -6,7 +6,8 @@ const MyContainer = styled.div`
     align-items: center;
     flex-direction: column;
     position: relative;
-    min-height: 99.75vh;
+    height: 100vh;
+    background-color: #FFB199;
 `
 
 const Container = ({children}) => {
