@@ -12,7 +12,7 @@ const InputBox = styled.input`
     left: 2rem;
 `;
 
-const InputEmail = ({type, placeholder}) => {
+const InputPassword = ({type, placeholder}) => {
     return (
         <InputBox
             type={type}
@@ -21,4 +21,4 @@ const InputEmail = ({type, placeholder}) => {
     )
 }
 
-export default InputEmail;
+export default InputPassword;
