@@ -1,0 +1,23 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:7.3.1")
+        +       classpath("com.facebook.react:react-native-gradle-plugin")
+    }
+}
+
+apply plugin: "com.android.application"
+apply plugin: "com.facebook.react"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Other dependencies here
+    +   implementation {"com.facebook.react:react-android"}
+    +   implementation {"com.facebook.react:hermes-android"}
+}

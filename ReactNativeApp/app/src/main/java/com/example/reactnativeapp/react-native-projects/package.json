@@ -8,5 +8,8 @@
   "dependencies": {
     "create-react-app": "^5.0.1",
     "react-native": "^0.75.4"
+  },
+  "devDependencies": {
+    "metro-config": "^0.80.12"
   }
 }
