@@ -12,7 +12,7 @@ const Main = () => {
     return (
         <Universal>
             <Container>
-                <LoginContainer>
+                <LoginContainer id='login-container'>
                     <h1 className="l-h">Login</h1>  
                     <Form>
                         <div className='input-box1'>
