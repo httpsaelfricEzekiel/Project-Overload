@@ -8,8 +8,7 @@ const InputBox = styled.input`
     background-color: white;
     color: black;
     border: none;
-    position: absolute;
-    left: 2rem;
+    cursor: pointer;
 `;
 
 const InputPassword = ({type, placeholder}) => {

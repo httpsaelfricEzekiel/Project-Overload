@@ -5,11 +5,10 @@ const FormContainer = styled.form`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 57vh;
-    width: 99%;
+    height: 55vh;
+    width: 100%;
     position: absolute;
     top: 7rem;
-    ${'' /* border: 1px solid red; */}
     border-radius: 2rem;
 `;
 const Form = ({children}) => {

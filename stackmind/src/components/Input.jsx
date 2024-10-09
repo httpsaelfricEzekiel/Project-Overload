@@ -7,9 +7,8 @@ const InputBox = styled.input`
     border-radius: 1rem;
     background-color: white;
     color: black;
+    cursor: pointer;
     border: none;
-    position: absolute;
-    left: 2rem;
 `;
 
 const InputEmail = ({type, placeholder}) => {

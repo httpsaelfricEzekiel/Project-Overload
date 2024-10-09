@@ -6,6 +6,7 @@ const ButtonBox  = styled.button`
     border: none;
     border-radius: 2rem;
     box-shadow: 0.40rem 0.40rem 0.1rem gray;
+    cursor: pointer;
 `;
 
 

@@ -7,6 +7,7 @@ import InputPassword from './components/InputPassword';
 import LoginContainer from './components/LoginBox';
 import Universal from './components/Universal';
 import './style.css';
+
 const Main = () => {
     return (
         <Universal>
