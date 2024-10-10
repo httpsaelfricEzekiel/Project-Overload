@@ -1,0 +1,17 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+, "components/ThemedView.jsx", "components/ThemedText.jsx", "components/ParallaxScrollView.tsx", "components/HelloWave.jsx", "components/ExternalLink.jsx", "components/Collapsible.tsx"  ]
+}
