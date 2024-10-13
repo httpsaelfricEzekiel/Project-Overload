@@ -11,9 +11,9 @@ const FormContainer = styled.form`
     top: 7rem;
     border-radius: 2rem;
 `;
-const Form = ({children}) => {
+const Form = ({children, onInsert}) => {
     return (
-        <FormContainer>
+        <FormContainer onSubmit={onInsert}>
             {children}
         </FormContainer>
     )

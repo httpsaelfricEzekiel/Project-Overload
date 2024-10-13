@@ -37,8 +37,8 @@
     background-color: white;
     color: black;
 }
-@media screen and (min-width: 1082px){
+@media screen and (min-width: 1155px){
     #login-container{
-        width: 40%;
+        width: 35%;
     }
 }

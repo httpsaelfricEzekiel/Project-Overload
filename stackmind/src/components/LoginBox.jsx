@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const LoginContainer = styled.div`
-    width: 40%;
+    width: 35%;
     position: absolute;
     top: 6rem;
     height: 75vh;
