@@ -13,6 +13,6 @@ app.set("view engine", "ejs");
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static("public"));
+app.use(express.static("../../public"));
 
 module.exports = app;
