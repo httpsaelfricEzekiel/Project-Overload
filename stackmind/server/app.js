@@ -14,6 +14,13 @@ app.post('/insert', (req, res) => {
 
     conn.query(insertQuery, (err, result) => {
         if (err) throw err;
+
+        res.sendStatus(200).send(`
+            <script>
+                alert("1 student inserted");
+                window.location.href="/";
+            </script>    
+        `)
     })
 
 })

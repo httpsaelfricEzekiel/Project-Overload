@@ -35,30 +35,32 @@ const Main = () => {
         setFormData({...formData, [name]: value});
 
     }
-    const insertStudent = async (e) => {
-        e.preventDefault();
-
-        const url = "http://localhost:4000/insert";
+    const insertStudent = async () => {
         
         const data = new FormData();
+        const email = data.append("email", formData.email);
+        const password = data.append("email", formData.password);
+        
+        const get_email = data.get(email);
+        const get_pass = data.get(password);
 
         try {
-            const response = await axios.post(url, formData);
-            console.log(response.data);
-            if(response) {
-                if(users.includes(data.append("email", formData.email)) && users_password.includes(data.append("password", formData.password))){
-                    alert("student inserted");
-                    setFormData({
-                        email: '',
-                        password: ''
-                    });
-                    setLoggedIn(true);
-                } else {
-                    alert("Invalid");
+            const url = "http://localhost:4000/insert";
+            await axios.post(url, formData)
+            .then((res) => {
+                if(res.status === 200) {
+                    if (users.includes(get_email) && users_password.includes(get_pass)){
+                        setFormData({
+                            email: " ",
+                            password: ""
+                        })
+                        setLoggedIn(true);
+                    }
                 }
-            } else {    
-                alert("error in post request");
-            }
+            })
+            .catch((err) => {
+                console.log(err);
+            })
         } catch (error){
             console.log(error);
         }

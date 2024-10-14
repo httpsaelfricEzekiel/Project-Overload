@@ -12,8 +12,13 @@ const FormContainer = styled.form`
     border-radius: 2rem;
 `;
 const Form = ({children, onInsert}) => {
+    const handleForm = (e) => {
+        e.preventDefault();
+        onInsert();
+    }
+    
     return (
-        <FormContainer onSubmit={onInsert}>
+        <FormContainer onSubmit={handleForm}>
             {children}
         </FormContainer>
     )
