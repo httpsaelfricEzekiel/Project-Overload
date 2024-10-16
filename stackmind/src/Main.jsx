@@ -10,53 +10,56 @@ import Universal from './components/Universal';
 import './style.css';
 
 const Main = () => {
-    // const [email, setEmail] = useState("");
-    // const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [formData, setFormData] = useState({
-        email: ' ',
-        password: ' '
+        email: email,
+        password: password
     })
     const [loggedIn, setLoggedIn] = useState(true);
     const [message, setMessage] = useState("");
-
-    const users = [formData.email];
-    const users_password = [formData.password];
+    // const users = [formData.email];
+    // const users_password = [formData.password];
 
     useEffect(() => {
         const url = "http://localhost:4000";
-        fetch(url)
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type':'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+            body: formData
+        })
         .then((res) => res.json())
         .then((data) => setMessage(data.message))
         .catch((error) => console.log(error));
     }, [])
     
+    
     const insertChange = (e) => {
         const {name, value} = e.target;
         setFormData({...formData, [name]: value});
-
     }
-    const insertStudent = async () => {
-        
-        const data = new FormData();
-        const email = data.append("email", formData.email);
-        const password = data.append("email", formData.password);
-        
-        const get_email = data.get(email);
-        const get_pass = data.get(password);
 
+    const insertStudent = async () => {
         try {
             const url = "http://localhost:4000/insert";
-            await axios.post(url, formData)
+            await axios.post(url, formData, {
+                headers: {
+                    'content-type': 'application/json',
+                    'access-control-allow-origin':'*',
+                }  
+            })
             .then((res) => {
                 if(res.status === 200) {
-                    if (users.includes(get_email) && users_password.includes(get_pass)){
-                        setFormData({
-                            email: " ",
-                            password: ""
-                        })
-                        setLoggedIn(true);
-                    }
-                }
+                    setFormData({
+                        ...formData,
+                        email: "",
+                        password: ""
+                    })
+                    setLoggedIn(true);
+                } 
             })
             .catch((err) => {
                 console.log(err);
@@ -65,7 +68,6 @@ const Main = () => {
             console.log(error);
         }
     }
-
     return (
         <Universal>
             <Container>

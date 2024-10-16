@@ -2,7 +2,7 @@ const app = require('./express/express');
 const conn = require('./mysql/conn');
 
 app.get('/', (req, res) => {
-    res.json({ message: "hello backend from nodejs" })
+    res.send({ message: "hello backend from nodejs" })
 })
 
 app.post('/insert', (req, res) => {
@@ -14,13 +14,9 @@ app.post('/insert', (req, res) => {
 
     conn.query(insertQuery, (err, result) => {
         if (err) throw err;
-
-        res.sendStatus(200).send(`
-            <script>
-                alert("1 student inserted");
-                window.location.href="/";
-            </script>    
-        `)
+        res.send({
+            response: "1 student inserted"
+        });
     })
 
 })
