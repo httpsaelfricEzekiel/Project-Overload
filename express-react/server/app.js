@@ -13,7 +13,9 @@ app.use(express.static('public'));
 
 app.get('/api', (req, res) => {
     res.json({
-        message: 'Hello from server!'
+        message: 'Hello from server!',
+        title: "Express React Login",
+        server: "This is the server response"
     })
 })
 
@@ -52,5 +54,5 @@ app.post('/register', (req, res) => {
 })
 
 app.listen(app.get('port'), app.get('host'), () => {
-    console.log(`Server is running on http://${app.get('host')}:${app.get('port')}`);
+    console.log(`Server is running on http://${app.get('host')}:${app.get('port')}/api`);
 })

@@ -3,6 +3,8 @@ import axios from "axios"
 
 function App() {
   const [message, setMessage] = useState("");
+  const [title, setTitle] = useState("");
+  const [serverResponse, setServerResponse] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -13,7 +15,11 @@ function App() {
   useEffect(() => {
     fetch("/api")
     .then((res) => res.json())
-    .then((data) => setMessage(data.message))
+    .then((data) => {
+      setMessage(data.message)
+      setTitle(data.title)
+      setServerResponse(data.server)
+    })
     .catch((err) => console.log(`Failed to retrieve data in server: ${err}`))
   }, [])
 
@@ -41,7 +47,8 @@ function App() {
   return (
     <div>
       <div>
-        <h1>Express React Login</h1>
+        <h1>{title}</h1>
+        <h2>{serverResponse}</h2>
         <form onSubmit={registerUser}>
           <input type="text" placeholder="First Name" value={formData.firstName} onChange={(e) => setFormData({...formData, firstName: e.target.value})}/>
           <input type="text" placeholder="Last Name" value={formData.lastName} onChange={(e) => setFormData({...formData, lastName: e.target.value})}/>
