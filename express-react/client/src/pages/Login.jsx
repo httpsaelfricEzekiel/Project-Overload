@@ -73,7 +73,7 @@ function Login() {
                 )}
             </div>
             <div>
-                {typeof loginMessage === "undefined" ? (
+                {typeof loginMessage === "object" ? (
                     <p></p>
                 ) : (
                     <h1>{loginMessage}</h1>

@@ -43,7 +43,9 @@ app.post('/login', (req, res) => {
 
     if(!password){
         return res.json({error: "Password is required!"})
-    } else if (password.length < 8){
+    } 
+    
+    if (password.length < 8){
         return res.json({error: "Password must be at least 8 characters"})
     }
 
