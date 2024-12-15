@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react"
 import axios from "axios"
+import {useNavigate} from "react-router-dom"
 
 function Login() {
     const [message, setMessage] = useState("");
@@ -9,6 +10,11 @@ function Login() {
         email: "",
         password: ""
     })
+    const navigate = useNavigate();
+    const accounts = [{
+        email: formData.email,
+        password: formData.password
+    }]
 
     useEffect(() => {
         fetch("/api")
@@ -27,12 +33,20 @@ function Login() {
             await axios.post('/login', formData)
             .then((res) => {
                 if(res.status === 200){
+                    const users = accounts.find((user) => user.email === formData.email && user.password === formData.password)
                     if(formData.email.trim() !== "" && formData.password.trim() !== ""){
-                        setFormData({
-                            email: "",
-                            password: ""
-                        })
                         setLoginMessage(res.data.message)
+                        if(users >= 1){
+                            localStorage.setItem("email", res.data.token)
+                            localStorage.setItem("password", res.data.token)
+                            setFormData({
+                                email: "",
+                                password: ""
+                            })
+                            navigate('/home')
+                        } else {
+                            setErrorMessage(res.data.error)
+                        }
                     } else {
                         setErrorMessage(res.data.error)
                     }
@@ -65,18 +79,18 @@ function Login() {
                     <p></p>
                 )}
             </div>
-            <div>
-                {typeof errorMessage === "object" ? (
-                    <p></p>
-                ) : (
+            <div>   
+                {typeof errorMessage !== "object" ? (
                     <h1>{errorMessage}</h1>
+                ) : (
+                    <p></p>
                 )}
             </div>
             <div>
-                {typeof loginMessage === "object" ? (
-                    <p></p>
-                ) : (
+                {typeof loginMessage !== "object" ? (
                     <h1>{loginMessage}</h1>
+                ) : (
+                    <p>Loading .....</p>
                 )}
             </div>
         </div>

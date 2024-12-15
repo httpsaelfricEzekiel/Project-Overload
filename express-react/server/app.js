@@ -4,13 +4,14 @@ const cors = require('cors');
 const app = express();
 const conn = require('./mysql/conn'); 
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
 app.set('port', process.env.PORT || 5000);
 app.set('host', process.env.HOST || 'localhost');  
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.static('public')); 
+app.use(express.static(path.join(__dirname, 'public'))); 
 
 app.get('/api', (req, res) => {
     res.json({
@@ -45,24 +46,23 @@ app.post('/login', (req, res) => {
         return res.json({error: "Password is required!"})
     } 
     
-    if (password.length < 8){
+    if (password.length <= 8){
         return res.json({error: "Password must be at least 8 characters"})
     }
 
     conn.query(loggedInQuery, [email, password], (err, result) => {
-
-        if(!result.find((user) => user.email === email && user.password === password)) {
-            return res.json({error: "Invalid email or password"})
-        }
-
         if(err) {
             return res.json({error: "Failed to login"})
+        } else {
+            if(!result.find((user) => user.email === email && user.password === password)) {
+                return res.json({error: "Invalid email or password"})
+            }
+    
+            const token = jwt.sign({email: email, password: password}, SECRET_KEY, {expiresIn: '1h'});
+            return res.json({
+                message: "Logged in successfully", token: token
+            })
         }
-
-        const token = jwt.sign({email: email, password: password}, SECRET_KEY, {expiresIn: '1h'});
-        return res.json({
-            message: "Logged in successfully", token: token
-        })
     })
 })
 

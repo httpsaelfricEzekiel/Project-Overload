@@ -8,8 +8,9 @@ import Home from "./pages/Home";
 function App() {
   return (
     <BrowserRouter>
+      <Layout />
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route>
           <Route path="home" index element={<Home/>} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
