@@ -5,6 +5,8 @@ const app = express();
 const conn = require('./mysql/conn'); 
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const session = require('express-session');
+const { error } = require('console');
 
 app.set('port', process.env.PORT || 5000);
 app.set('host', process.env.HOST || 'localhost');  
@@ -12,34 +14,83 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public'))); 
+function generateId(length){
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*()_+';
+    let charactersLength = characters.length;
+    for (let i = 0; i < length; i++){
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+app.use(session({
+    secret: process.env.SESSION_KEY || generateId(70),
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false,
+    }
+}))
 
 app.get('/api', (req, res) => {
     res.json({
         login: "Login",
         title: "Register",
-        server: "This is the server response"
     })
 })
 
-app.get('/home', (req, res) => {
+const verifyToken = (req, res, next) => {
+    if(req.session.user){
+        next();
+    } else {
+        res.redirect('/api')
+    }
+}
+
+app.get('/home', verifyToken, (req, res) => {
     return res.json({
-        message: "Welcome to the home page"
+        message: "Welcome to the Home Page",
+        session: req.session.user
     })
 })
 
 app.post('/login', (req, res) => {
-    const {email, password} = req.body;
-    const SECRET_KEY = process.env.SECRET_KEY || 'StcadsGFdc42A@sdh123GvsBHcEAsdws';
-    const loggedInQuery = `SELECT * FROM tbl_accounts WHERE email = ? AND password = ?`;
+    function generateId(length){
+        let result = '';
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*()_+';
+        let charactersLength = characters.length;
+        for (let i = 0; i < length; i++){
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
 
+    const {email, password} = req.body;
+    const SECRET_KEY = process.env.SECRET_KEY || generateId(70);
+
+    if(!SECRET_KEY){
+        return res.json({
+            error: "Failed to generate token"
+        })
+    } else {
+        console.log(`Token: ${SECRET_KEY}`);
+    }
+
+    const loggedInQuery = `SELECT * FROM tbl_accounts WHERE email = ? AND password = ?`;
+    
     if(!email && !password) {
         return res.json({
-            error: "All fields are required"
+            error: "Fill up all required fields"
         })
     }
 
     if(!email){
         return res.json({error: "Email is required!"})
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/;
+    if(!emailRegex.test(email)){
+        return res.json({error: "Invalid email adddress"})
     }
 
     if(!password){
@@ -55,12 +106,15 @@ app.post('/login', (req, res) => {
             return res.json({error: "Failed to login"})
         } else {
             if(!result.find((user) => user.email === email && user.password === password)) {
-                return res.json({error: "Invalid email or password"})
+                return res.json({error: "Invalid email and password"})
             }
-    
-            const token = jwt.sign({email: email, password: password}, SECRET_KEY, {expiresIn: '1h'});
+
+            const token = jwt.sign({id: result[0].id}, SECRET_KEY, {expiresIn: '1h'});
+            const session = req.session.user = {
+                id: result[0].id,
+            }
             return res.json({
-                message: "Logged in successfully", token: token
+                message: "Logged in successfully", token: token, session: session
             })
         }
     })
@@ -69,6 +123,24 @@ app.post('/login', (req, res) => {
 app.post('/register', (req, res) => {
     const {firstName, lastName, email, password} = req.body;
 
+    function generateId(length){
+        let result = '';
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*()_+';
+        let charactersLength = characters.length;
+        for (let i = 0; i < length; i++){
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    const generateToken = process.env.SECRET_KEY || generateId(70);
+
+    if(!generateToken){
+        return res.json({error: "Failed to generate token"})
+    } else {
+        console.log(`Registration Token: ${generateToken}`);
+    }
+    
     const insertquery = `INSERT INTO tbl_accounts (firstName, lastName, email, password) VALUES (?, ?, ?, ?)`;
 
     if(!firstName && !lastName && !email && !password) {
@@ -87,6 +159,11 @@ app.post('/register', (req, res) => {
         return res.json({message: "Email is required"})
     }
 
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/;
+    if(!emailRegex.test(email)) {
+        return res.json({message: "Invalid email address"})
+    }
+    
     if(!password) {
         return res.json({message: "Password is required"})
     }   
@@ -96,7 +173,11 @@ app.post('/register', (req, res) => {
             return res.json({message: "Failed to register user"})
         };
 
-        return res.json({message: "Registered Successfully"})
+        const token = jwt.sign({id: result.insertId}, generateToken, {expiresIn: '1h'});2
+        const session = req.session.user = {
+            id: result.insertId,
+        }
+        return res.json({message: "Registered Successfully", token: token, session: session})
     })
 })
 

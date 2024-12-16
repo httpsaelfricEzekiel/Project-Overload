@@ -3,14 +3,12 @@ import { Link, Outlet} from "react-router-dom";
 export default function Layout(){
     return (
         <nav>
-            <ul>
-                <li>
-                    <Link to="/login">Login</Link>
-                </li>
-                <li>
-                    <Link to="/register">Register</Link>
-                </li>
-            </ul>
+            <div>
+                <Link to="/login">Login</Link>
+            </div>
+            <div>
+                <Link to="/register">Register</Link>
+            </div>
             <Outlet />
         </nav>
     )

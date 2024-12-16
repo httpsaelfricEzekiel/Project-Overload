@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react"
 import axios from "axios"
 import {useNavigate} from "react-router-dom"
+import Layout from "./Layout";
 
 function Login() {
     const [message, setMessage] = useState("");
@@ -11,10 +12,6 @@ function Login() {
         password: ""
     })
     const navigate = useNavigate();
-    const accounts = [{
-        email: formData.email,
-        password: formData.password
-    }]
 
     useEffect(() => {
         fetch("/api")
@@ -33,24 +30,18 @@ function Login() {
             await axios.post('/login', formData)
             .then((res) => {
                 if(res.status === 200){
-                    const users = accounts.find((user) => user.email === formData.email && user.password === formData.password)
-                    if(formData.email.trim() !== "" && formData.password.trim() !== ""){
-                        setLoginMessage(res.data.message)
-                        if(users >= 1){
-                            localStorage.setItem("email", res.data.token)
-                            localStorage.setItem("password", res.data.token)
-                            setFormData({
-                                email: "",
-                                password: ""
-                            })
-                            navigate('/home')
-                        } else {
-                            setErrorMessage(res.data.error)
-                        }
+                    setLoginMessage(res.data.message)
+                    if(res.data.token){ 
+                        localStorage.setItem("jwtToken", res.data.token)
+                        navigate("/home")
+                    } else if(res.data.error){
+                        setErrorMessage(res.data.error)
                     } else {
                         setErrorMessage(res.data.error)
                     }
-                } 
+                } else {
+                    navigate("/error")
+                }
             })
             .catch((error) => {
                 console.log(`Failed to login: ${error}`)
@@ -62,28 +53,22 @@ function Login() {
 
     return (
         <div>
+            <Layout />
             <div>
                 <h1>{message}</h1>
             </div>
             <div>
                 <form onSubmit={loggedIn}>
-                    <input type="email" placeholder="Enter Email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})}/> 
+                    <input type="text" placeholder="Enter Email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})}/> 
                     <input type="password" placeholder="Enter Password" value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})}/> 
                     <button type="submit">Login</button>
                 </form>
             </div>
             <div>
                 {formData.email.trim() === "" && formData.password.trim() === "" ? (
-                    <h1>Fill up the required fields!</h1>
-                ) : (
-                    <p></p>
-                )}
-            </div>
-            <div>   
-                {typeof errorMessage !== "object" ? (
                     <h1>{errorMessage}</h1>
                 ) : (
-                    <p></p>
+                    <h1>{errorMessage}</h1>
                 )}
             </div>
             <div>
