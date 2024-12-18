@@ -2,6 +2,32 @@ import {useState, useEffect} from "react"
 import axios from "axios"
 import {useNavigate} from "react-router-dom"
 import Layout from "./Layout";
+import styled from 'styled-components'
+import '../App.css'
+
+const Title = styled.h1`
+    color: ${props => props.color ?  props.color : '#651fff'};
+    font-size: 1.2rem;
+    font-family: 'Verdana', 'Arial', 'san-serif';
+    margin: 0;
+`
+const ButtonLogin = styled.button`
+    background-color: #3d5afe;
+    color: white;
+    font-size: 1rem;
+    width: 20rem;
+    height: 3rem;
+    border-radius: 2rem;
+    border: #bdbdbd
+`
+
+const Button = ({children, type}) => {
+    return (
+        <ButtonLogin type={type}>
+            {children}
+        </ButtonLogin>
+    )
+}
 
 function Login() {
     const [message, setMessage] = useState("");
@@ -12,16 +38,20 @@ function Login() {
         password: ""
     })
     const navigate = useNavigate();
-
+    
     useEffect(() => {
-        fetch("/api")
-        .then((res) => res.json())
-        .then((data) => {
-            setMessage(data.login)
-        })
-        .catch((error) => {
+        try {
+            fetch("/api")
+            .then((res) => res.json())
+            .then((data) => {
+                setMessage(data.login)
+            })
+            .catch((error) => {
+                console.log(`Failed to retrieve data from server: ${error}`)
+            })
+        } catch (error) {
             console.log(`Failed to retrieve data from server: ${error}`)
-        })
+        }
     }, [])
 
     const loggedIn = async (e) => {
@@ -56,31 +86,41 @@ function Login() {
     }
 
     return (
-        <div>
-            <Layout />
-            <div>
-                <h1>{message}</h1>
-            </div>
-            <div>
-                <form onSubmit={loggedIn}>
-                    <input type="text" placeholder="Enter Email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})}/> 
-                    <input type="password" placeholder="Enter Password" value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})}/> 
-                    <button type="submit">Login</button>
-                </form>
-            </div>
-            <div>
-                {formData.email.trim() === "" && formData.password.trim() === "" ? (
-                    <h1>{errorMessage}</h1>
-                ) : (
-                    <h1>{errorMessage}</h1>
-                )}
-            </div>
-            <div>
-                {typeof loginMessage !== "object" ? (
-                    <h1>{loginMessage}</h1>
-                ) : (
-                    <p>Loading .....</p>
-                )}
+        <div className="login-container">
+            <div className="login-box">
+                <Layout />
+                <div className="side-box-form">
+                    <div className="login-title">
+                        <Title color="#039be5">{message}</Title>
+                    </div>
+                    <div className="login-box-form">
+                        <form onSubmit={loggedIn} className="form-box">
+                            <div className="form-group">
+                                <input type="text" placeholder="Enter Email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} id="email"/> 
+                            </div>
+                            <div className="form-group">
+                                <input type="password" placeholder="Enter Password" value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} id="password"/> 
+                            </div>
+                            <div className="button-form-group">
+                                <Button type="submit">Login</Button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div className="error-message">
+                    {formData.email.trim() === "" && formData.password.trim() === "" ? (
+                        <h1>{errorMessage}</h1>
+                    ) : (
+                        <h1>{errorMessage}</h1>
+                    )}
+                </div>
+                <div>
+                    {typeof loginMessage !== "object" ? (
+                        <h1>{loginMessage}</h1>
+                    ) : (
+                        <p>Loading .....</p>
+                    )}
+                </div>
             </div>
         </div>
     )

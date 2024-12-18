@@ -35,8 +35,8 @@ app.use(session({
 
 app.get('/api', (req, res) => {
     res.json({
-        login: "Login",
-        title: "Register",
+        login: "Login Account",
+        title: "Register Account",
     })
 })
 

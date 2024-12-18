@@ -4,8 +4,10 @@ function Home() {
     const [message, setMessage] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    
     useEffect(() => {
-        fetch("/home")
+        try {
+            fetch("/home")
             .then((res) => res.json())
             .then((data) => {
                 setMessage(data.message)
@@ -13,16 +15,23 @@ function Home() {
             .catch((error) => {
                 console.log(`Failed to retrieve data from server: ${error}`)
             })
+        } catch (error) {
+            console.log(`Failed to retrieve data from server: ${error}`)
+        }
     }, [])
 
     useEffect(() => {
-        const firstName = localStorage.getItem("firstName");
-        const lastName = localStorage.getItem("lastName");
-        if (!firstName || !lastName) {
-            return;
-        } else {
-            setFirstName(firstName);
-            setLastName(lastName);
+        try {
+            const firstName = localStorage.getItem("firstName");
+            const lastName = localStorage.getItem("lastName");
+            if (!firstName || !lastName) {
+                return;
+            } else {
+                setFirstName(firstName);
+                setLastName(lastName);
+            }
+        } catch (error) {
+            console.log(`Failed to retrieve data from local storage: ${error}`)
         }
     }, [])
     

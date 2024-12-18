@@ -1,38 +1,81 @@
-.App {
-  text-align: center;
+.login-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #78909c;
+    position: relative;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.login-box {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #cfd8dc;
+    height: 36rem;
+    width: 70rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.side-box-form {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 34rem;
+    background-color: #e3f2fd;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.login-title {
+    position: absolute;
+    right: 12rem;
+    top: 5rem;
+    display: block;
 }
-
-.App-link {
-  color: #61dafb;
+.login-box-form {
+    position: absolute;
+    top: 10rem;
+    padding: 0.5rem;
+    display: block;
+    height: 65%;
+    /* border: 1px solid red; */
+    width: 93.6%;
+    padding: 1rem;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.form-box {
+    position: absolute;
+    top: 3rem;
+    width: 95%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.7rem;
+}
+.form-group{
+    display: block;
+    box-sizing: border-box;
+    position: relative;
+    left: 1rem;
+    bottom: 5rem;
+}
+.form-group #email,
+.form-group #password {
+    width: 20rem;
+    height: 3rem;
+    padding: 0.5rem 1em;
+    border: 1px solid #b0bec5;
+    border-radius: 0.25rem;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+.button-form-group {
+    display: block;
+    width: 20rem;
+    position: absolute;
+    bottom: 2rem;
+    right: 5.20rem;
+    height: 3rem;
+}
+.error-message {
+    z-index: 1;
 }
