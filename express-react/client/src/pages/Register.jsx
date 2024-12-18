@@ -11,7 +11,6 @@ function Register() {
         email: "",
         password: ""
     })
-
     useEffect(() => {
         fetch("/api")
             .then((res) => res.json())
@@ -28,12 +27,11 @@ function Register() {
             await axios.post("/register", formData)
                 .then((res) => {
                     if (res.status === 200) {
-                        setFormData({
-                            firstName: "",
-                            lastName: "",
-                            email: "",
-                            password: ""
-                        })
+                        localStorage.setItem("firstName", formData.firstName)
+                        localStorage.setItem("lastName", formData.lastName)
+                        localStorage.setItem("email", formData.email)
+                        localStorage.setItem("password", formData.password)
+                        localStorage.setItem("jwtToken", res.data.token)
                         setMessage(res.data.message)
                     }
                 })

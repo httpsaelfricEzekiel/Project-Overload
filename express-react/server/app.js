@@ -6,14 +6,14 @@ const conn = require('./mysql/conn');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const session = require('express-session');
-const { error } = require('console');
 
 app.set('port', process.env.PORT || 5000);
 app.set('host', process.env.HOST || 'localhost');  
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public'))); 
+app.use(express.static(path.join(__dirname, 'public')));
+
 function generateId(length){
     let result = '';
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*()_+';
@@ -23,6 +23,7 @@ function generateId(length){
     }
     return result;
 }
+
 app.use(session({
     secret: process.env.SESSION_KEY || generateId(70),
     resave: false,
@@ -39,18 +40,22 @@ app.get('/api', (req, res) => {
     })
 })
 
-const verifyToken = (req, res, next) => {
-    if(req.session.user){
-        next();
-    } else {
-        res.redirect('/api')
-    }
-}
-
-app.get('/home', verifyToken, (req, res) => {
-    return res.json({
+app.get('/home', (req, res) => {
+    return res.status(200).json({
         message: "Welcome to the Home Page",
         session: req.session.user
+    })
+})
+
+app.get('/data', (req, res) => {
+    const data = `SELECT * FROM tbl_accounts`;
+
+    conn.query(data, (err, result) => {
+        if(err){
+            return res.json({message: `Cannot retrieve data:  ${err}`})
+        } else {
+            return res.json({message: result})
+        }
     })
 })
 
@@ -79,18 +84,18 @@ app.post('/login', (req, res) => {
     const loggedInQuery = `SELECT * FROM tbl_accounts WHERE email = ? AND password = ?`;
     
     if(!email && !password) {
-        return res.json({
+        return res.status(200).json({
             error: "Fill up all required fields"
         })
     }
 
     if(!email){
-        return res.json({error: "Email is required!"})
+        return res.status(200).json({error: "Email is required!"})
     }
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/;
     if(!emailRegex.test(email)){
-        return res.json({error: "Invalid email adddress"})
+        return res.status(200).json({error: "Invalid email adddress"})
     }
 
     if(!password){
@@ -98,23 +103,29 @@ app.post('/login', (req, res) => {
     } 
     
     if (password.length <= 8){
-        return res.json({error: "Password must be at least 8 characters"})
+        return res.status(200).json({error: "Password must be at least 8 characters"})
     }
 
     conn.query(loggedInQuery, [email, password], (err, result) => {
         if(err) {
-            return res.json({error: "Failed to login"})
+            return res.status(200).json({error: "Failed to login"})
         } else {
             if(!result.find((user) => user.email === email && user.password === password)) {
-                return res.json({error: "Invalid email and password"})
+                return res.status(200).json({error: "Invalid email and password"})
             }
 
-            const token = jwt.sign({id: result[0].id}, SECRET_KEY, {expiresIn: '1h'});
+            const user = result[0];
+            const token = jwt.sign({id: user.id}, SECRET_KEY, {expiresIn: '1h'});
             const session = req.session.user = {
-                id: result[0].id,
+                id: user.id,
             }
-            return res.json({
-                message: "Logged in successfully", token: token, session: session
+            
+            return res.status(200).json({
+                message: "Logged in successfully", 
+                token: token, 
+                session: session,
+                firstName: user.firstName,
+                lastName: user.lastName
             })
         }
     })
@@ -144,40 +155,52 @@ app.post('/register', (req, res) => {
     const insertquery = `INSERT INTO tbl_accounts (firstName, lastName, email, password) VALUES (?, ?, ?, ?)`;
 
     if(!firstName && !lastName && !email && !password) {
-        return res.json({message: "All fields are required"})
+        return res.status(200).json({message: "All fields are required"})
     }
 
     if(!firstName) {
-        return res.json({message: "First Name is required"})
+        return res.status(200).json({message: "First Name is required"})
     }
 
     if(!lastName) {
-        return res.json({message: "Last Name is required"})
+        return res.status(200).json({message: "Last Name is required"})
     }
 
     if(!email) {
-        return res.json({message: "Email is required"})
+        return res.status(200).json({message: "Email is required"})
     }
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/;
     if(!emailRegex.test(email)) {
-        return res.json({message: "Invalid email address"})
+        return res.status(200).json({message: "Invalid email address"})
     }
     
     if(!password) {
-        return res.json({message: "Password is required"})
+        return res.status(200).json({message: "Password is required"})
+    }   
+
+    if(password.length <= 4){
+        return res.status(200).json({message: "Your password is weak"})
+    }
+
+    if(password.length <= 8){
+        return res.status(200).json({message: "Your password is moderate"})
+    }
+
+    if(password.length <= 12 && password.length >= 8){
+        return res.status(200).json({message: "Your password is strong"})
     }   
 
     conn.query(insertquery, [firstName, lastName, email, password], (err, result) => {
         if(err) {
-            return res.json({message: "Failed to register user"})
+            return res.status(200).json({message: "Failed to register user"})
         };
 
         const token = jwt.sign({id: result.insertId}, generateToken, {expiresIn: '1h'});2
         const session = req.session.user = {
             id: result.insertId,
         }
-        return res.json({message: "Registered Successfully", token: token, session: session})
+        return res.status(200).json({message: "Registered Successfully", token: token, session: session})
     })
 })
 

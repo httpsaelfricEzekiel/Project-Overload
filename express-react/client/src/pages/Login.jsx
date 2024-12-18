@@ -32,6 +32,10 @@ function Login() {
                 if(res.status === 200){
                     setLoginMessage(res.data.message)
                     if(res.data.token){ 
+                        localStorage.setItem("firstName", res.data.firstName)
+                        localStorage.setItem("lastName", res.data.lastName)
+                        localStorage.setItem("email", formData.email)
+                        localStorage.setItem("password", formData.password)
                         localStorage.setItem("jwtToken", res.data.token)
                         navigate("/home")
                     } else if(res.data.error){
