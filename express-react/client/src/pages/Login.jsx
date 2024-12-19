@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react"
 import axios from "axios"
 import {useNavigate} from "react-router-dom"
-import Layout from "./Layout";
+import {RegisterLink} from "./Layout";
 import styled from 'styled-components'
 import '../App.css'
 
@@ -88,7 +88,7 @@ function Login() {
     return (
         <div className="login-container">
             <div className="login-box">
-                <Layout />
+                <RegisterLink />
                 <div className="side-box-form">
                     <div className="login-title">
                         <Title color="#039be5">{message}</Title>

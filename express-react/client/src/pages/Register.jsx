@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
-import Layout from "./Layout";
+import LoginLink from "./Layout";
 
 function Register() {
     const [message, setMessage] = useState("");
@@ -43,7 +43,7 @@ function Register() {
 
     return (
         <div>
-            <Layout />
+            <LoginLink />
             <div>
                 <h1>{title}</h1>
                 <form onSubmit={registerUser}>
