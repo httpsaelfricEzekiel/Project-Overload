@@ -2,13 +2,14 @@ import { Link, Outlet} from "react-router-dom";
 import styled from "styled-components";
 
 const NavbarRegister = styled.nav`
-    width: 5rem;
-    height: 5rem;
+    width: 8rem;
+    height: 2rem;
     position: absolute;
-    bottom: 0;
-    right: 2rem;
-    border: 1px solid red;
+    bottom: 6.50rem;
+    ${'' /* border: 1px solid red; */}
+    right: 5rem;
     z-index: 1;
+    text-align: center;
 `
 
 export default function LoginLink(){
@@ -26,7 +27,7 @@ export function RegisterLink(){
     return (
         <NavbarRegister>
             <div>
-                <Link to="/register" style={{textDecoration: 'none'}}>Register</Link>
+                <Link to="/register" style={{textDecoration: 'none'}}>Register Here</Link>
             </div>
             <Outlet/>
         </NavbarRegister>

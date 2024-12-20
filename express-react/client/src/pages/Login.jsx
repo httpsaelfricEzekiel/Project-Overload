@@ -106,6 +106,9 @@ function Login() {
                             </div>
                         </form>
                     </div>
+                    <div className="register-account-container">
+                        <p>Don't you have an account?</p>
+                    </div>
                 </div>
                 <div className="error-message">
                     {formData.email.trim() === "" && formData.password.trim() === "" ? (

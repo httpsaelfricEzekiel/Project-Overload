@@ -79,3 +79,10 @@
 .error-message {
     z-index: 1;
 }
+.register-account-container {
+    text-align: center;
+    position: absolute;
+    bottom: 6.20rem;
+    left: 8rem;
+    /* border: 1px solid red; */
+}
