@@ -40,18 +40,21 @@ function Login() {
     const navigate = useNavigate();
     
     useEffect(() => {
-        try {
-            fetch("/api")
-            .then((res) => res.json())
-            .then((data) => {
-                setMessage(data.login)
-            })
-            .catch((error) => {
+        const homePage = () => {
+            try {
+                fetch("/api")
+                .then((res) => res.json())
+                .then((data) => {
+                    setMessage(data.login)
+                })
+                .catch((error) => {
+                    console.log(`Failed to retrieve data from server: ${error}`)
+                })
+            } catch (error) {
                 console.log(`Failed to retrieve data from server: ${error}`)
-            })
-        } catch (error) {
-            console.log(`Failed to retrieve data from server: ${error}`)
+            }
         }
+        homePage()
     }, [])
 
     const loggedIn = async (e) => {
@@ -61,15 +64,10 @@ function Login() {
             .then((res) => {
                 if(res.status === 200){
                     setLoginMessage(res.data.message)
-                    if(res.data.token){ 
-                        localStorage.setItem("firstName", res.data.firstName)
-                        localStorage.setItem("lastName", res.data.lastName)
-                        localStorage.setItem("email", formData.email)
-                        localStorage.setItem("password", formData.password)
-                        localStorage.setItem("jwtToken", res.data.token)
+                    if(res.data.token && res.data.session){ 
+                        localStorage.setItem("firstName", res.data.session.firstName)
+                        localStorage.setItem("lastName", res.data.session.lastName)
                         navigate("/home")
-                    } else if(res.data.error){
-                        setErrorMessage(res.data.error)
                     } else {
                         setErrorMessage(res.data.error)
                     }

@@ -1,4 +1,4 @@
-import { Link, Outlet} from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const NavbarRegister = styled.nav`
@@ -16,9 +16,8 @@ export default function LoginLink(){
     return (
         <nav>
             <div>
-                <Link to="/login">Login</Link>
+                <Link to="/login" style={{textDecoration: 'none'}}>Login</Link>
             </div>
-            <Outlet />
         </nav>
     )
 }
@@ -27,9 +26,8 @@ export function RegisterLink(){
     return (
         <NavbarRegister>
             <div>
-                <Link to="/register" style={{textDecoration: 'none'}}>Register Here</Link>
+                <Link to="/register" style={{textDecoration: 'none'}}>Register</Link>
             </div>
-            <Outlet/>
         </NavbarRegister>
     )
 }

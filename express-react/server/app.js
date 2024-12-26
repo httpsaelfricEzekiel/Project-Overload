@@ -34,7 +34,7 @@ app.use(session({
 }))
 
 app.get('/api', (req, res) => {
-    res.json({
+    res.status(200).json({
         login: "Login Account",
         title: "Register Account",
     })
@@ -118,14 +118,14 @@ app.post('/login', (req, res) => {
             const token = jwt.sign({id: user.id}, SECRET_KEY, {expiresIn: '1h'});
             const session = req.session.user = {
                 id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
             }
             
             return res.status(200).json({
                 message: "Logged in successfully", 
                 token: token, 
-                session: session,
-                firstName: user.firstName,
-                lastName: user.lastName
+                session: session
             })
         }
     })
