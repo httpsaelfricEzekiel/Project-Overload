@@ -1,12 +1,12 @@
-import {useState, useEffect} from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
-import {useNavigate} from "react-router-dom"
-import {RegisterLink} from "./Layout";
+import { useNavigate } from "react-router-dom"
+import { RegisterLink } from "./Layout";
 import styled from 'styled-components'
 import '../App.css'
 
 const Title = styled.h1`
-    color: ${props => props.color ?  props.color : '#651fff'};
+    color: ${props => props.color ? props.color : '#651fff'};
     font-size: 1.2rem;
     font-family: 'Verdana', 'Arial', 'san-serif';
     margin: 0;
@@ -21,7 +21,7 @@ const ButtonLogin = styled.button`
     border: #bdbdbd
 `
 
-const Button = ({children, type}) => {
+const Button = ({ children, type }) => {
     return (
         <ButtonLogin type={type}>
             {children}
@@ -43,13 +43,13 @@ function Login() {
         const homePage = () => {
             try {
                 fetch("/api")
-                .then((res) => res.json())
-                .then((data) => {
-                    setMessage(data.login)
-                })
-                .catch((error) => {
-                    console.log(`Failed to retrieve data from server: ${error}`)
-                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        setMessage(data.login)
+                    })
+                    .catch((error) => {
+                        console.log(`Failed to retrieve data from server: ${error}`)
+                    })
             } catch (error) {
                 console.log(`Failed to retrieve data from server: ${error}`)
             }
@@ -61,23 +61,23 @@ function Login() {
         try {
             e.preventDefault();
             await axios.post('/login', formData)
-            .then((res) => {
-                if(res.status === 200){
-                    setLoginMessage(res.data.message)
-                    if(res.data.token && res.data.session){ 
-                        localStorage.setItem("firstName", res.data.session.firstName)
-                        localStorage.setItem("lastName", res.data.session.lastName)
-                        navigate("/home")
+                .then((res) => {
+                    if (res.status === 200) {
+                        setLoginMessage(res.data.message)
+                        if (res.data.token && res.data.session) {
+                            localStorage.setItem("firstName", res.data.session.firstName)
+                            localStorage.setItem("lastName", res.data.session.lastName)
+                            navigate("/home")
+                        } else {
+                            setErrorMessage(res.data.error)
+                        }
                     } else {
-                        setErrorMessage(res.data.error)
+                        navigate("/error")
                     }
-                } else {
-                    navigate("/error")
-                }
-            })
-            .catch((error) => {
-                console.log(`Failed to login: ${error}`)
-            })
+                })
+                .catch((error) => {
+                    console.log(`Failed to login: ${error}`)
+                })
         } catch (error) {
             console.log(`Failed to login: ${error}`)
         }
@@ -94,13 +94,25 @@ function Login() {
                     <div className="login-box-form">
                         <form onSubmit={loggedIn} className="form-box">
                             <div className="form-group">
-                                <input type="text" placeholder="Enter Email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} id="email"/> 
+                                <input
+                                    type="text"
+                                    placeholder="Enter Email"
+                                    value={formData.email}
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    id="email"
+                                />
                             </div>
                             <div className="form-group">
-                                <input type="password" placeholder="Enter Password" value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} id="password"/> 
+                                <input
+                                    type="password"
+                                    placeholder="Enter Password"
+                                    value={formData.password} 
+                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                    id="password"
+                                />
                             </div>
                             <div className="button-form-group">
-                                <Button type="submit">Login</Button>
+                                <Button type="submit" id="login">Login</Button>
                             </div>
                         </form>
                     </div>

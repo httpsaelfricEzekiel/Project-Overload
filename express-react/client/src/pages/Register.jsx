@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import LoginLink from "./Layout";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
     const [message, setMessage] = useState("");
@@ -11,6 +12,9 @@ function Register() {
         email: "",
         password: ""
     })
+
+    const navigate = useNavigate();
+
     useEffect(() => {
         fetch("/api")
             .then((res) => res.json())
@@ -27,12 +31,18 @@ function Register() {
             await axios.post("/register", formData)
                 .then((res) => {
                     if (res.status === 200) {
-                        localStorage.setItem("firstName", formData.firstName)
-                        localStorage.setItem("lastName", formData.lastName)
-                        localStorage.setItem("email", formData.email)
-                        localStorage.setItem("password", formData.password)
-                        localStorage.setItem("jwtToken", res.data.token)
+                        if (formData.firstName !== "" && formData.lastName !== "" && formData.email !== "" && formData.password !== "") {
+                            setFormData({
+                                firstName: "",
+                                lastName: "",
+                                email: "",
+                                password: ""
+                            })
+                            navigate("/register")
+                        }
                         setMessage(res.data.message)
+                    } else {
+                        navigate("/error")
                     }
                 })
                 .catch((error) => console.log(`Failed to register user ${error}`))
@@ -47,7 +57,7 @@ function Register() {
             <div>
                 <h1>{title}</h1>
                 <form onSubmit={registerUser}>
-                    <input type="text" placeholder="First Name" value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}/>
+                    <input type="text" placeholder="First Name" value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} />
                     <input type="text" placeholder="Last Name" value={formData.lastName} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} />
                     <input type="text" placeholder="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
                     <input type="password" placeholder="Password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
