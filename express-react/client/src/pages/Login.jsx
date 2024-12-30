@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { RegisterLink } from "./Layout";
 import styled from 'styled-components'
 import '../App.css'
+import image from '../images/bg-image.jpg'
 
 const Title = styled.h1`
     color: ${props => props.color ? props.color : '#651fff'};
@@ -119,6 +120,9 @@ function Login() {
                     <div className="register-account-container">
                         <p>Don't you have an account?</p>
                     </div>
+                </div>
+                <div className="login-account-img-container">
+                    <img src={image} id="clinic-img" alt="clinic"/>
                 </div>
                 <div className="error-message">
                     {formData.email.trim() === "" && formData.password.trim() === "" ? (
