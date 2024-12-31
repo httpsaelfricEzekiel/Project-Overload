@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { RegisterLink } from "./Layout";
 import styled from 'styled-components'
 import '../App.css'
-import image from '../images/bg-image.jpg'
+import image from '../images/bg-clinic3.jpg'
 
 const Title = styled.h1`
     color: ${props => props.color ? props.color : '#651fff'};

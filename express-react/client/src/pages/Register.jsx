@@ -52,22 +52,24 @@ function Register() {
     }
 
     return (
-        <div>
-            <LoginLink />
-            <div>
-                <h1>{title}</h1>
-                <form onSubmit={registerUser}>
-                    <input type="text" placeholder="First Name" value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} />
-                    <input type="text" placeholder="Last Name" value={formData.lastName} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} />
-                    <input type="text" placeholder="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-                    <input type="password" placeholder="Password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
-                    <button type="submit">Login</button>
-                </form>
-                {formData.firstName.trim() === "" && formData.lastName.trim() === "" && formData.email.trim() === "" && formData.password.trim() === "" ? (
-                    <h1>{message}</h1>
-                ) : (
-                    <h1>{message}</h1>
-                )}
+        <div className="register-container">
+            <div className="register-box">
+                <LoginLink />
+                <div>
+                    <h1>{title}</h1>
+                    <form onSubmit={registerUser}>
+                        <input type="text" placeholder="First Name" value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} />
+                        <input type="text" placeholder="Last Name" value={formData.lastName} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} />
+                        <input type="text" placeholder="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+                        <input type="password" placeholder="Password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
+                        <button type="submit">Login</button>
+                    </form>
+                    {formData.firstName.trim() === "" && formData.lastName.trim() === "" && formData.email.trim() === "" && formData.password.trim() === "" ? (
+                        <h1>{message}</h1>
+                    ) : (
+                        <h1>{message}</h1>
+                    )}
+                </div>
             </div>
         </div>
     )
