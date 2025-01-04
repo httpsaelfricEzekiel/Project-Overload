@@ -61,7 +61,11 @@ function Login() {
     const loggedIn = async (e) => {
         try {
             e.preventDefault();
-            await axios.post('/login', formData)
+            await axios.post('/login', formData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
                 .then((res) => {
                     if (res.status === 200) {
                         setLoginMessage(res.data.message)

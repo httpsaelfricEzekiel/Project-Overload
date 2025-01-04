@@ -10,6 +10,7 @@ function Register() {
         firstName: "",
         lastName: "",
         email: "",
+        dateOfBirth: "",
         password: ""
     })
 
@@ -28,14 +29,19 @@ function Register() {
     const registerUser = async (e) => {
         try {
             e.preventDefault();
-            await axios.post("/register", formData)
+            await axios.post("/register", formData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
                 .then((res) => {
                     if (res.status === 200) {
-                        if (formData.firstName !== "" && formData.lastName !== "" && formData.email !== "" && formData.password !== "") {
+                        if (formData.firstName !== "" && formData.lastName !== "" && formData.email !== "" && formData.dateOfBirth !== "" && formData.password !== "") {
                             setFormData({
                                 firstName: "",
                                 lastName: "",
                                 email: "",
+                                dateOfBirth: "",
                                 password: ""
                             })
                             navigate("/register")
@@ -54,17 +60,43 @@ function Register() {
     return (
         <div className="register-container">
             <div className="register-box">
-                <LoginLink />
-                <div>
+                <div className="register-form-field">
+                    <LoginLink />
                     <h1>{title}</h1>
                     <form onSubmit={registerUser}>
-                        <input type="text" placeholder="First Name" value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} />
-                        <input type="text" placeholder="Last Name" value={formData.lastName} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} />
-                        <input type="text" placeholder="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-                        <input type="password" placeholder="Password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
+                        <input
+                            type="text"
+                            placeholder="First Name"
+                            value={formData.firstName}
+                            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Last Name" 
+                            value={formData.lastName} 
+                            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} 
+                        />
+                        <input 
+                            type="text" 
+                            placeholder="Email" 
+                            value={formData.email} 
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })} 
+                        />
+                        <input 
+                            type="date" 
+                            placeholder="Date of Birth" 
+                            value={formData.dateOfBirth} 
+                            onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })} 
+                        />
+                        <input 
+                            type="password" 
+                            placeholder="Password" 
+                            value={formData.password} 
+                            onChange={(e) => setFormData({ ...formData, password: e.target.value })} 
+                        />
                         <button type="submit">Login</button>
                     </form>
-                    {formData.firstName.trim() === "" && formData.lastName.trim() === "" && formData.email.trim() === "" && formData.password.trim() === "" ? (
+                    {formData.firstName.trim() === "" && formData.lastName.trim() === "" && formData.email.trim() === "" && formData.dateOfBirth.trim() === "" && formData.password.trim() === "" ? (
                         <h1>{message}</h1>
                     ) : (
                         <h1>{message}</h1>
