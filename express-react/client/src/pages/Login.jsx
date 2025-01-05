@@ -66,23 +66,23 @@ function Login() {
                     'Content-Type': 'application/json'
                 }
             })
-                .then((res) => {
-                    if (res.status === 200) {
-                        setLoginMessage(res.data.message)
-                        if (res.data.token && res.data.session) {
-                            localStorage.setItem("firstName", res.data.session.firstName)
-                            localStorage.setItem("lastName", res.data.session.lastName)
-                            navigate("/home")
-                        } else {
-                            setErrorMessage(res.data.error)
-                        }
+            .then((res) => {
+                if (res.status === 200) {
+                    setLoginMessage(res.data.message)
+                    if (res.data.token && res.data.session) {
+                        localStorage.setItem("firstName", res.data.session.firstName)
+                        localStorage.setItem("lastName", res.data.session.lastName)
+                        navigate("/home")
                     } else {
-                        navigate("/error")
+                        setErrorMessage(res.data.error)
                     }
-                })
-                .catch((error) => {
-                    console.log(`Failed to login: ${error}`)
-                })
+                } else {
+                    navigate("/error")
+                }
+            })
+            .catch((error) => {
+                console.log(`Failed to login: ${error}`)
+            })
         } catch (error) {
             console.log(`Failed to login: ${error}`)
         }

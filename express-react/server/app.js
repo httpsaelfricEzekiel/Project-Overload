@@ -237,7 +237,7 @@ app.post('/register', (req, res) => {
             return res.status(200).json({ message: "Failed to register user" })
         };
 
-        const token = jwt.sign({ id: result.insertId }, generateToken, { expiresIn: '1h' }); 2
+        const token = jwt.sign({ id: result.insertId }, generateToken, { expiresIn: '1h' });
         const session = req.session.user = {
             id: result.insertId,
         }

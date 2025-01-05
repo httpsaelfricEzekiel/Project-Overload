@@ -62,40 +62,61 @@ function Register() {
             <div className="register-box">
                 <div className="register-form-field">
                     <LoginLink />
-                    <h1>{title}</h1>
-                    <form onSubmit={registerUser}>
-                        <input
-                            type="text"
-                            placeholder="First Name"
-                            value={formData.firstName}
-                            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Last Name" 
-                            value={formData.lastName} 
-                            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} 
-                        />
-                        <input 
-                            type="text" 
-                            placeholder="Email" 
-                            value={formData.email} 
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })} 
-                        />
-                        <input 
-                            type="date" 
-                            placeholder="Date of Birth" 
-                            value={formData.dateOfBirth} 
-                            onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })} 
-                        />
-                        <input 
-                            type="password" 
-                            placeholder="Password" 
-                            value={formData.password} 
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })} 
-                        />
-                        <button type="submit">Login</button>
-                    </form>
+                    <div className="register-title">
+                        <h1 className="title-content">{title}</h1>
+                    </div>
+                    <div className="register-form-box">
+                        <form onSubmit={registerUser} className="register-input">
+                            <div className="register-form-group">
+                                <input
+                                    type="text"
+                                    placeholder="First Name"
+                                    value={formData.firstName}
+                                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                                    id="firstName"
+                                />
+                            </div>
+                            <div className="register-form-group">
+                                <input
+                                    type="text"
+                                    placeholder="Last Name" 
+                                    value={formData.lastName} 
+                                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} 
+                                    id="lastName"
+                                />
+                            </div>
+                            <div className="register-form-group">
+                                <input 
+                                    type="text" 
+                                    placeholder="Email" 
+                                    value={formData.email} 
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })} 
+                                    id="email"
+                                />
+                            </div>
+                            <div className="register-form-group">
+                                <input 
+                                    type="date" 
+                                    placeholder="Date of Birth" 
+                                    value={formData.dateOfBirth} 
+                                    onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })} 
+                                    id="date-of-birth"
+                                />
+                            </div>
+                            <div className="register-form-group">
+                                <input 
+                                    type="password" 
+                                    placeholder="Password" 
+                                    value={formData.password} 
+                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })} 
+                                    id="password"
+                                />
+                            </div>
+                            <div className="register-button-form">
+                                <button type="submit">Login</button>
+                            </div>
+                        </form>
+                    </div>
                     {formData.firstName.trim() === "" && formData.lastName.trim() === "" && formData.email.trim() === "" && formData.dateOfBirth.trim() === "" && formData.password.trim() === "" ? (
                         <h1>{message}</h1>
                     ) : (

@@ -67,7 +67,7 @@
     height: 3rem;
     padding: 0.5rem 1em;
     border: 1px solid #b0bec5;
-    border-radius: 0.25rem;
+    border-radius: 1rem;
     font-size: 0.9rem;
     box-sizing: border-box;
 }
@@ -117,7 +117,7 @@
 }
 .register-box {
     border-radius: 2rem;
-    background-color: #42a5f5   ;
+    background-color: #42a5f5;
     padding: 1rem;
     display: flex;
     align-items: center;
@@ -129,7 +129,67 @@
 }
 .register-form-field {
     /* border: 1px solid red; */
-    height: 70vh;
-    padding: 2rem;
-    background-color: #42a5f5;
+    padding: 1rem;
+}
+.register-title {
+    display: block;
+    margin: 0.50rem;
+    padding: 1rem;
+}
+.title-content {
+    text-align: center;
+    font-size: 1.50rem;
+    line-height: 1.5;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    color: black;
+    margin: 0;
+}
+.register-form-box .register-input {
+    padding: 1rem;
+    display: grid;
+    /* border: 1px solid red; */
+    row-gap: 1rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    width: 50vw;
+    height: 60vh;
+}
+.register-form-group{
+    position: absolute;
+    top: 3rem;
+    display: block;
+    box-sizing: border-box;
+    padding: 0.50rem;
+    position: relative;
+    left: 2rem;
+    width: 19rem;
+    /* border: 1px solid red; */
+}
+#firstName, #lastName, #email, #date-of-birth, #password {
+    width: 18rem;
+    padding: 1rem 1rem;
+    border:  1px solid gray;
+    font-size: 0.80rem;
+    border-radius: 1rem;
+    box-sizing: border-box;
+}
+.register-button-form {
+    /* border: 1px solid red; */
+    position: absolute;
+    bottom: 5rem;
+    left: 16rem;
+    display: block;
+}
+.register-button-form button{
+    font-size: 1rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 1rem;
+    width: 20rem;
+    background-color: white;
+    border: none;
+    border-radius: 1rem;
+}
+.register-button-form button:hover {
+    background-color: black;
+    color: white;
 }

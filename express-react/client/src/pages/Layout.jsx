@@ -12,13 +12,22 @@ const NavbarRegister = styled.nav`
     text-align: center;
 `
 
+const NavbarLogin = styled.nav`
+    border-radius: 1rem;
+    position: absolute;
+    right: 0;
+    bottom: 1rem;
+    border: 1px solid red;
+    display: block;
+`
+
 export default function LoginLink(){
     return (
-        <nav>
-            <div>
-                <Link to="/login" style={{textDecoration: 'none'}}>Login</Link>
+        <NavbarLogin>
+            <div className="login-link">
+                <Link to="/login" style={{textDecoration: 'none', color: 'black', fontSize: '1rem'}}>Login</Link>
             </div>
-        </nav>
+        </NavbarLogin>
     )
 }
 
